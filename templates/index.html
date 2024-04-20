@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HardwareHelper</title>
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      main {
+        flex-grow: 1;
+      }
+
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #212529;
+        padding: 1rem;
+      }
+
+      .chat-window {
+        height: 320px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="container py-4">
+        <header class="pb-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center text-body-emphasis text-decoration-none">
+            <span class="fs-3">Client Info</span>
+          </a>
+        </header>
+        <form method="POST" action="/">
+          <div class="input-group">
+            <select class="form-select" name="gender" id="inputGroupSelect04" aria-label="Example select with button addon">
+              <option selected>Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <select class="form-select" name="occupation" id="inputGroupSelect05" aria-label="Example select with button addon">
+              <option selected>Occupation</option>
+              <option value="Healthcare">Healthcare</option>
+              <option value="Engineer">Engineer</option>
+              <option value="Lawyer">Lawyer</option>
+              <option value="Entertainment">Entertainment</option>
+              <option value="Artist">Artist</option>
+              <option value="Executive">Executive</option>
+              <option value="Doctor">Doctor</option>
+              <option value="Homemaker">Homemaker</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+
+            <input type="number" class="form-control" placeholder="Age" aria-label="Age" name="age">
+            <input type="number" class="form-control" placeholder="Family" aria-label="Family" name="family">
+            <input type="number" class="form-control" placeholder="Working years" aria-label="Working years" name="working_years">
+            <input type="number" class="form-control" placeholder="Products bought" aria-label="Products" name="products_bought">
+
+            <button class="btn btn-outline-secondary" type="submit">Change</button>
+          </div>
+        </form>
+
+        <p></p>
+        <header class="pb-3 mb-4 border-bottom">
+          <a href="/" class="d-flex align-items-center text-body-emphasis text-decoration-none">
+            <span class="fs-1">HardwareHelper</span>
+          </a>
+        </header>
+
+          <div class="mb-3" id="chat-window">
+            <div class="card">
+              <div class="card-body ">
+                <ul class="list-group chat-window">
+                  {% for message in chat_messages %}
+                  {% autoescape false %}<li class="list-group-item border-0">{{ message.sender }}: {{ message.message }}</li>{% endautoescape %}
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+      </div>
+    </main>
+    <footer>
+      <div class="container px-4">
+        <form method="post" action="/">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="How can I help you?"
+              aria-label="chat"
+              aria-describedby="button-addon2"
+              name="message"
+              {% if is_waiting_for_response %}disabled{% endif %}
+            />
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2" {% if is_waiting_for_response %}disabled{% endif %}>
+              Send
+            </button>
+          </div>
+        </form>
+      </div>
+    </footer>
+
+    <script>
+      const chatWindow = document.querySelector('.chat-window');
+
+      function scrollToBottom() {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+
+      window.onload = scrollToBottom;
+
+
+      function handleSubmitForm() {
+        scrollToBottom();
+      }
+    </script>
+
+    <script>
+      const chatWindow = document.querySelector('.chat-window');
+      const messageInput = document.getElementById('message-input');
+      const sendButton = document.getElementById('send-button');
+
+      function scrollToBottom() {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+
+      window.onload = scrollToBottom;
+
+      function handleSubmitForm() {
+        scrollToBottom();
+      }
+
+      // Add event listener for Enter key
+      messageInput.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {
+          event.preventDefault(); // Prevent form submission on Enter key
+          sendButton.click(); // Trigger click event on the "Send" button
+        }
+      });
+    </script>
+
+
+  </body>
+</html>
