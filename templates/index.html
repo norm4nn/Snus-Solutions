@@ -33,7 +33,7 @@
       }
 
       .chat-window {
-        height: 300px;
+        height: 420px;
         overflow-y: auto;
       }
     </style>
@@ -47,12 +47,12 @@
           </a>
         </header>
 
-          <div class="mb-3">
+          <div class="mb-3" id="chat-window">
             <div class="card">
-              <div class="card-body">
+              <div class="card-body ">
                 <ul class="list-group chat-window">
                   {% for message in chat_messages %}
-                  <li class="list-group-item border-0">{{ message.sender }}: {{ message.message }}</li>
+                  {% autoescape false %}<li class="list-group-item border-0">{{ message.sender }}: {{ message.message }}</li>{% endautoescape %}
                   {% endfor %}
                 </ul>
               </div>
@@ -71,8 +71,9 @@
               aria-label="chat"
               aria-describedby="button-addon2"
               name="message"
+              {% if is_waiting_for_response %}disabled{% endif %}
             />
-            <button class="btn btn-outline-secondary" type="submit" id="button-addon2">
+            <button class="btn btn-outline-secondary" type="submit" id="button-addon2" {% if is_waiting_for_response %}disabled{% endif %}>
               Send
             </button>
           </div>
@@ -80,20 +81,44 @@
       </div>
     </footer>
 
-  <script>
-  const chatWindow = document.querySelector('.chat-window');
+    <script>
+      const chatWindow = document.querySelector('.chat-window');
 
-  function scrollToBottom() {
-    chatWindow.scrollTop = chatWindow.scrollHeight;
-  }
+      function scrollToBottom() {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
 
-  window.onload = scrollToBottom;
+      window.onload = scrollToBottom;
 
 
-  function handleSubmitForm() {
-    scrollToBottom();
-  }
-</script>
+      function handleSubmitForm() {
+        scrollToBottom();
+      }
+    </script>
+
+    <script>
+      const chatWindow = document.querySelector('.chat-window');
+      const messageInput = document.getElementById('message-input');
+      const sendButton = document.getElementById('send-button');
+
+      function scrollToBottom() {
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+      }
+
+      window.onload = scrollToBottom;
+
+      function handleSubmitForm() {
+        scrollToBottom();
+      }
+
+      // Add event listener for Enter key
+      messageInput.addEventListener('keydown', function(event) {
+        if (event.keyCode === 13) {
+          event.preventDefault(); // Prevent form submission on Enter key
+          sendButton.click(); // Trigger click event on the "Send" button
+        }
+      });
+    </script>
 
 
   </body>
