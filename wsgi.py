@@ -16,17 +16,37 @@ def index():
     global is_waiting_for_response
 
     if request.method == "POST":
-        if not is_waiting_for_response:
-            message = request.form.get("message")
-            sender = "<b>User</b>"
-            chat_messages.append({"sender": sender, "message": message})
-            is_waiting_for_response = True  # Set the flag to True
+        if "message" in request.form:
+            # Handle user message
+            if not is_waiting_for_response:
+                message = request.form.get("message")
+                sender = "<b>User</b>"
+                chat_messages.append({"sender": sender, "message": message})
+                is_waiting_for_response = True  # Set the flag to True
 
-            # Replace this with your code to generate a response
-            response = generate_response(message)
+                response = generate_response(message)
 
-            chat_messages.append({"sender": "<b style='color:DarkGreen;'>Helper</b>", "message": response})
-            is_waiting_for_response = False  # Reset the flag to False
+                chat_messages.append({"sender": "<b style='color:DarkGreen;'>Helper</b>", "message": response})
+                is_waiting_for_response = False  # Reset the flag to False
+
+        else:
+            # Handle form submission
+            gender = request.form.get("gender")
+            occupation = request.form.get("occupation")
+            age = request.form.get("age")
+            family = request.form.get("family")
+            working_years = request.form.get("working_years")
+            products_bought = request.form.get("products_bought")
+
+            # Process the form data as needed
+            print(f'Gender: {gender}')
+            print(f'Occupation: {occupation}')
+            print(f'Age: {age}')
+            print(f'Family: {family}')
+            print(f'Working Years: {working_years}')
+            print(f'Products Bought: {products_bought}')
+
+            # You can add your logic here to handle the form data
 
     return render_template("index.html", chat_messages=chat_messages, is_waiting_for_response=is_waiting_for_response)
 
