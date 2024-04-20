@@ -5,6 +5,7 @@ import utils
 import pandas as pd
 from recommender import Customer, recommend_products
 import torch
+from model_class import SpendingsPredictor
 
 app = Flask(__name__)
 client = OpenAI(api_key=API_KEY)
@@ -46,6 +47,7 @@ def index():
             working_years = request.form.get("working_years")
             products_bought = request.form.get("products_bought")
 
+
             # Process the form data as needed
             print(f'Gender: {gender}')
             print(f'Occupation: {occupation}')
@@ -54,15 +56,18 @@ def index():
             print(f'Working Years: {working_years}')
             print(f'Products Bought: {products_bought}')
 
-            mapped_customer = utils.map_customer([gender, int(age), occupation, int(working_years), int(family), int(products_bought), 10])
-
+            mapped_customer = utils.map_customer([gender, int(age), occupation, int(working_years), int(family), int(products_bought)])
+            model = torch.load("spendings_predictor.pt")
+            # model.eval()
             # You can add your logic here to handle the form data
+            # TODO change model into actual model not just a placeholder
             model_output = model(mapped_customer)
             values = model_output.detach().numpy()
             customer = Customer(values[0,0], None, occupation, values[0,1])
-            products = recommend_products(customer)
+            products = recommend_products(customer, laptops, keyboards)
 
-            products = [products[0].loc[:, ["Laptop", "Final Price"], products[1].loc[:, ["Name", "Price"]]]]
+            products = [products[0].loc[:, ["Laptop", "Final Price"]], products[1].loc[:, ["Name", "Price"]]]
+            print(products)
 
     return render_template("index.html", chat_messages=chat_messages, is_waiting_for_response=is_waiting_for_response)
 
