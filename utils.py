@@ -11,7 +11,7 @@ data = pd.read_csv("customers.csv")
 mapping_string_to_int = {}
 
 label_encoder = LabelEncoder()
-string_fields = ['Gender_x', 'Profession', 'Spending_Score']
+string_fields = ['Gender_x', 'Profession', 'Spending_Score', 'Ever_Married', 'Graduated', 'Var_1']
 for string_field in string_fields:
     old = data[string_field].copy()
     data[string_field] = label_encoder.fit_transform(data[string_field])
@@ -32,13 +32,16 @@ for field_name in data.columns:
 
 
 def map_customer(customer: List):
-    strings_fields_idx = [0, 2]
+    strings_fields_idx = [0, 2, 6, 7, 8]
+    l = len(customer)
     for i in strings_fields_idx:
         customer[i] = mapping_string_to_int[customer[i]]
 
     for i in range(len(customer)):
         customer[i] -= mins_and_ranges[i][0]
         customer[i] /= mins_and_ranges[i][1]
+        customer[i] = min(0.99, customer[i])
+        customer[i] = max(0, customer[i])
 
     customer = torch.tensor(customer).to(torch.float32)
-    return customer.reshape((1, 7))
+    return customer.reshape((1, l))
