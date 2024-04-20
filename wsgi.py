@@ -4,9 +4,11 @@ from Constansts import API_KEY
 import utils
 import pandas as pd
 from recommender import Customer, recommend_products
+import torch
 
 app = Flask(__name__)
 client = OpenAI(api_key=API_KEY)
+SAVE_PATH = "spendings_predictor.pt"
 
 # Static list to store chat messages
 chat_messages = []
@@ -14,6 +16,7 @@ chat_messages = []
 is_waiting_for_response = False
 laptops = pd.read_csv("laptops_data.csv")
 keyboards = pd.read_csv("keyboards_data.csv")
+model = torch.load(SAVE_PATH)
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -54,7 +57,6 @@ def index():
             mapped_customer = utils.map_customer([gender, int(age), occupation, int(working_years), int(family), int(products_bought), 10])
 
             # You can add your logic here to handle the form data
-            # TODO change model into actual model not just a placeholder
             model_output = model(mapped_customer)
             values = model_output.detach().numpy()
             customer = Customer(values[0,0], None, occupation, values[0,1])
