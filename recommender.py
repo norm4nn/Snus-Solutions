@@ -2,6 +2,8 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
+
+
 @dataclass
 class Customer:
     def __init__(self, funds: int = None, possible_discount: float = None, profession: str = None, power: int = None):
@@ -10,7 +12,7 @@ class Customer:
         self.profession = profession
         self.power = power
 
-def recommend_products(customer: Customer, *args):
+def recommend_products(customer: Customer, *args) -> list[pd.DataFrame]:
     if not isinstance(customer, Customer):
         raise ValueError("Input must be a Customer object")
 
