@@ -159,4 +159,10 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 /Constansts.py
+.DS_Store
 /Constansts.py
+michas.py
+all_keyboards.csv
+data.ipynb
+laptops.csv
+train.csv
