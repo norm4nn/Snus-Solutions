@@ -2,7 +2,7 @@ from typing import List
 from sklearn.preprocessing import MinMaxScaler
 import torch
 from sklearn.preprocessing import LabelEncoder
-from array import array
+
 import numpy as np
 import pandas as pd
 
@@ -39,7 +39,6 @@ def map_customer(customer: List):
     for i in range(len(customer)):
         customer[i] -= mins_and_ranges[i][0]
         customer[i] /= mins_and_ranges[i][1]
-        customer[i] = min(array('f', [0.99]), customer[i])
 
     customer = torch.tensor(customer).to(torch.float32)
-    return customer.reshape((1, 6))
+    return customer.reshape((1, 7))
