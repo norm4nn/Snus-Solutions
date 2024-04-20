@@ -1,6 +1,8 @@
 from dataclasses import dataclass
-import pandas as pd
 import numpy as np
+import pandas as pd
+
+
 
 @dataclass
 class Customer:
@@ -10,32 +12,33 @@ class Customer:
         self.profession = profession
         self.power = power
 
-laptops = pd.read_csv("laptops_data.csv")
-keyboards = pd.read_csv("keyboards_data.csv")
+def recommend_products(customer: Customer, *args) -> list[pd.DataFrame]:
+    if not isinstance(customer, Customer):
+        raise ValueError("Input must be a Customer object")
 
-def recommend(customer: Customer):
-    return predictor(customer, laptops, "Final Price"), predictor(customer, keyboards, "Price")
+    def filter_products(products):
+        st_dev = np.std(products["Normalized"]) * customer.power
+        pred_products = products[products["Profession"].str.contains(customer.profession)]
+        pred_products = pred_products[(pred_products["Normalized"] > customer.funds - st_dev) & (pred_products["Normalized"] < customer.funds + st_dev)]
+        return pred_products
+    
+    def calculate_discount(products):
+        prod_mean = np.mean(products["Price"])
+        print(prod_mean)
+        products["Discounted"] = products["Price"]-prod_mean
+        for index, discounted_price in products["Discounted"].items():
+            # Calculate discounted price for the current product
+            new_discounted_price = products.at[index, "Price"] - max(discounted_price, 0) * customer.possible_discount
+            # Update the value in the DataFrame
+            products.at[index, "Discounted"] = new_discounted_price
+        products["Discounted"] = products["Discounted"].apply(lambda x: round(x, 2))
+        return products
 
-def predictor(customer: Customer, df: pd.DataFrame, column: str):
-    pred_key = df[df["Profession"] == customer.profession]
-    pred_key = pred_key.sort_values(by=column)
-    mean = pred_key[column].mean()
 
-    quantile = 0.5
-    match customer.power:
-        case 1:
-            quantile = 1/3
-            quant = np.quantile(pred_key[column], quantile)
-            pred_key = pred_key[pred_key[column] < mean-quant]
-        case 2:
-            quantile = 1/3
-            quant = np.quantile(pred_key[column], quantile)
-            pred_key = pred_key[pred_key[column] > mean-quant]
-            quantile = 2/3
-            quant = np.quantile(pred_key[column], quantile)
-            pred_key = pred_key[pred_key[column] < mean+quant]
-        case 3: 
-            quantile = 2/3
-            quant = np.quantile(pred_key[column], quantile)
-            pred_key = pred_key[pred_key[column] > mean+quant]
-    return pred_key
+    """pred_laptops = filter_products(laptops)
+    pred_keyboards = filter_products(keyboards)"""
+
+    predictions = [filter_products(arg) for arg in args]
+    predictions = [calculate_discount(p) for p  in predictions]
+
+    return predictions
