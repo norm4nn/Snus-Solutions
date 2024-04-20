@@ -9,6 +9,7 @@ from model_class import SpendingsPredictor
 
 app = Flask(__name__)
 client = OpenAI(api_key=API_KEY)
+SAVE_PATH = "spendings_predictor.pt"
 
 # Static list to store chat messages
 chat_messages = []
@@ -16,6 +17,7 @@ chat_messages = []
 is_waiting_for_response = False
 laptops = pd.read_csv("laptops_data.csv")
 keyboards = pd.read_csv("keyboards_data.csv")
+model = torch.load(SAVE_PATH)
 
 
 @app.route("/", methods=["GET", "POST"])
