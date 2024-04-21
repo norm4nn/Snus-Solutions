@@ -61,10 +61,11 @@ def index():
             # You can add your logic here to handle the form data
             model_output = model(mapped_customer)
             values = model_output.detach().numpy()
-            customer = Customer(values[0,0], None, occupation, values[0,1])
-            products = recommend_products(customer)
+            customer = Customer(values[0, 0], values[0, 2], occupation, values[0, 1])
+            products = recommend_products(customer, laptops, keyboards)
 
-            products = [products[0].loc[:, ["Laptop", "Final Price"], products[1].loc[:, ["Name", "Price"]]]]
+            products = [products[0].loc[:, ["Laptop", "Price", "Discounted"]], products[1].loc[:, ["Name", "Price", "Discounted"]]]
+            print(products)
 
     return render_template("index.html", chat_messages=chat_messages, is_waiting_for_response=is_waiting_for_response)
 
