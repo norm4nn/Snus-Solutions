@@ -1,6 +1,6 @@
 # HardwareHelper
 
-Welcome to the HardwareHelper! This Flask web application utilizes machine learning and OpenAI's language model to provide personalized product recommendations based on user input.
+Welcome to the HardwareHelper! This Flask web application utilizes machine learning and OpenAI's language model to provide personalized product recommendations based on data we optained about user..
 
 ## Features
 
