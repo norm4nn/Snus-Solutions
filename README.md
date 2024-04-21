@@ -1,6 +1,6 @@
 # HardwareHelper
 
-Welcome to the HardwareHelper! This Flask web application utilizes machine learning and OpenAI's language model to provide personalized product recommendations based on data we optained about user..
+Welcome to the HardwareHelper! This Flask web application utilizes machine learning and OpenAI's language model to provide personalized product recommendations based on data we optained about user.
 
 ## Features
 
@@ -16,10 +16,11 @@ To run the application locally, follow these steps:
 ```bash
 git clone https://github.com/norm4nn/Snus-Solutions.git
 cd Snus-Solutions
-pip install -r requirements.txt
 ```
 
 Obtain an API key from OpenAI and create `Constansts.py` with your API key as API_KEY variable.
+
+Make sure you have all required libraries installed. You can find them in *Dependencies* section.
 
 Ensure you have the necessary data files (`laptops_data.csv` and `keyboards_data.csv`) in the project directory.
 
