@@ -24,17 +24,7 @@ products = []
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    global is_waiting_for_response, products, user_info
-    # mapped_customer = utils.map_customer(["Male", 30, "Engineer", 7, 2, 3, "No", "No", "Cat_4"])
-    #
-    # # You can add your logic here to handle the form data
-    # model_output = model(mapped_customer)
-    # values = model_output.detach().numpy()
-    # customer = Customer(values[0, 0], values[0, 2], "Engineer", values[0, 1])
-    # products = recommend_products(customer, laptops, keyboards)
-    #
-    # products = [products[0].loc[:, ["Laptop", "Price", "Discounted"]],
-    #             products[1].loc[:, ["Name", "Price", "Discounted"]]]
+    global is_waiting_for_response, products, user_inf
 
     if request.method == "POST":
 
@@ -48,17 +38,6 @@ def index():
             print("user changed")
 
             products = generate_products()
-
-            # mapped_customer = utils.map_customer([gender, int(age), occupation, int(working_years), int(family), int(products_bought), "No", "No", "Cat_4"])
-            #
-            # # You can add your logic here to handle the form data
-            # model_output = model(mapped_customer)
-            # values = model_output.detach().numpy()
-            # customer = Customer(values[0, 0], values[0, 2], occupation, values[0, 1])
-            # products = recommend_products(customer, laptops, keyboards)
-            #
-            # products = [products[0].loc[:, ["Laptop", "Price", "Discounted"]], products[1].loc[:, ["Name", "Price", "Discounted"]]]
-            # print(products)
 
         if "message" in request.form:
             # Handle user message
@@ -99,13 +78,15 @@ def generate_products():
 
 def generate_response(message, products):
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        #model = "gpt-4-turbo-2024-04-09",
+        model="gpt-3.5-turbo-0125",
         messages=[
             {"role": "system", "content": f"You are a computer hardware store assinstant. Your task is to recommend "
                                           f"products to clients. You can only recommend following products: {products}"
                                           f"In your recommendation include price and offer discount based on provided "
                                           f"data. If discounted price is same as normal price don't mention it. "
-                                          f"Dont recommend anything else. Reply only in pure text dont use ** **"},
+                                          f"Dont recommend anything else. Try to offer 2 products at the time - laptop "
+                                          f"and keyboard. Reply only in pure text dont use ** **"},
 
             {"role": "user", "content": f"{message}"}
         ]
