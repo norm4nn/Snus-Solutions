@@ -47,5 +47,7 @@ Access the application in your web browser at `http://localhost:5000`.
 
 ## User Interface
 
+A client information UI with fields for details like gender, occupation, age, and product preferences. It provides hardware recommendations based on user queries, displaying a conversational interface to suggest items like high-performance laptops and premium keyboards with pricing details.
+
 ![image](https://github.com/norm4nn/Snus-Solutions/assets/50834734/1f814b5a-8719-4db5-a1a2-2864cfa3ecea)
 
