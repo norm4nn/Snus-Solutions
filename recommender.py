@@ -21,6 +21,7 @@ def recommend_products(customer: Customer, *args) -> list[pd.DataFrame]:
         pred_products = products[products["Profession"].str.contains(customer.profession)]
         pred_products = pred_products[(pred_products["Normalized"] > customer.funds - st_dev) & (pred_products["Normalized"] < customer.funds + st_dev)]
         return pred_products
+<<<<<<< HEAD
     
     def calculate_discount(products):
         prod_mean = np.mean(products["Price"])
@@ -40,5 +41,12 @@ def recommend_products(customer: Customer, *args) -> list[pd.DataFrame]:
 
     predictions = [filter_products(arg) for arg in args]
     predictions = [calculate_discount(p) for p  in predictions]
+=======
+
+    """pred_laptops = filter_products(laptops)
+    pred_keyboards = filter_products(keyboards)"""
+
+    predictions = [filter_products(arg) for arg in args]
+>>>>>>> b0635bdfe3ba23116ec7fcdc48ea7b29ed945be6
 
     return predictions

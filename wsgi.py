@@ -5,6 +5,7 @@ import utils
 import pandas as pd
 from recommender import Customer, recommend_products
 import torch
+from model_class import SpendingsPredictor
 
 app = Flask(__name__)
 client = OpenAI(api_key=API_KEY)
@@ -46,6 +47,7 @@ def index():
             working_years = request.form.get("working_years")
             products_bought = request.form.get("products_bought")
 
+
             # Process the form data as needed
             print(f'Gender: {gender}')
             print(f'Occupation: {occupation}')
@@ -54,7 +56,7 @@ def index():
             print(f'Working Years: {working_years}')
             print(f'Products Bought: {products_bought}')
 
-            mapped_customer = utils.map_customer([gender, int(age), occupation, int(working_years), int(family), int(products_bought), 10])
+            mapped_customer = utils.map_customer([gender, int(age), occupation, int(working_years), int(family), int(products_bought), "No", "No", "Cat_4"])
 
             # You can add your logic here to handle the form data
             model_output = model(mapped_customer)
